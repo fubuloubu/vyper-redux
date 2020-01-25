@@ -10,6 +10,7 @@ from typing import (
 )
 
 import lark
+import stringcase
 
 class Ast(py_ast.AST):
     _fields = ()
@@ -57,7 +58,7 @@ class Statement(Ast):
     pass
 
 
-class Pass_Stmt(Statement):
+class PassStmt(Statement):
     def __init__(self, arg):
         pass  # NOTE: Check later for only statement in body
 
@@ -99,7 +100,9 @@ AST_CLASSES = _get_ast_classes()
 class AstConverter(lark.Transformer):
     def __init__(self, *args, **kwargs):
         for name, ast_class in _get_ast_classes().items():
-            setattr(self, name.lower(), ast_class)
+            # NOTE: Convention is for classnames to be CamalCase,
+            #       but Lark rules are snake_case
+            setattr(self, stringcase.snakecase(name), ast_class)
         super().__init__(*args, **kwargs)
 
 

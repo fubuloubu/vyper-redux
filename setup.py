@@ -44,6 +44,7 @@ setup(
     py_modules=['vyper'],
     install_requires=[
         'lark-parser>=0.7.8,<1',
+        'stringcase==1.2.0',
     ],
     setup_requires=[
         'pytest-runner',
