@@ -12,7 +12,6 @@ module: ( COMMENT
         | interface
         | constant
         | variable
-        | variable_with_getter
         | method
         | event
         | _NEWLINE )*
@@ -33,14 +32,6 @@ unit: NAME ":" STRING
 units: "units" ":" "{" ( unit "," )* unit? "}"
 LABEL: "(" NAME ( "/" NAME )? ")"
 
-// Constant definitions
-constant: NAME ":" "constant" "(" memory_type ")" "=" test
-
-// NOTE: NAME as type should refer to a custom type that is already defined
-variable: NAME ":"  storage_type
-// NOTE: Temporary until decorators used
-variable_with_getter: NAME ":" "public" "(" storage_type ")"
-
 // A decorator "wraps" a method, modifying it's context.
 // NOTE: One or more can be applied (some combos might conflict)
 DECORATOR_NAME: ( "private"
@@ -51,6 +42,14 @@ DECORATOR_WITH_ARGS_NAME: ( "nonreentrant" )
 decorator: "@" DECORATOR_NAME _NEWLINE
          | "@" DECORATOR_WITH_ARGS_NAME [ "(" [arguments] ")" ] _NEWLINE
 decorators: decorator+
+
+// Constant definitions
+constant: NAME ":" "constant" "(" memory_type ")" "=" test
+
+// NOTE: NAME as type should refer to a custom type that is already defined
+// NOTE: Temporary until decorators used
+with_getter: NAME ":" "public" "(" storage_type ")"
+variable: ( NAME ":" storage_type | with_getter )
 
 // Methods take a list of zero or more typed parameters,
 // and can return up to one parameter.
