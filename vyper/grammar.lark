@@ -118,8 +118,8 @@ arguments: argument ("," argument)*  // [","]
          | test comp_for
 
 ?atom_expr: atom_expr "(" [arguments] ")"    -> call
-          | atom_expr "[" subscriptlist "]"  -> getitem
-          | atom_expr "." NAME               -> getattr
+          | atom_expr "[" subscriptlist "]"  -> item
+          | atom_expr "." NAME               -> attribute
           | atom
 
 ?atom: "(" [testlist_comp] ")" -> tuple
